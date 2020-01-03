@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="16f77e6d69fc4e8783d9ba488a4be106" Name="Diagram1">
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.Customer" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.Device" Width="1.5" PointX="1.5" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.OrderKindsLkp" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.Order" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.PaymentTypeLkp" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.Service" Width="1.5" PointX="0.75" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gMwgkPQw4EModel.User" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_orders_to_customers" ManuallyRouted="false" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_parent_self" ManuallyRouted="false" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_services_to_devices" ManuallyRouted="false" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_orders_to_order_kind" ManuallyRouted="false" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_orders_to_payment_type" ManuallyRouted="false" />
+        <AssociationConnector Association="gMwgkPQw4EModel.fk_orders_to_services" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
