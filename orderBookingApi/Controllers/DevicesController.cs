@@ -8,22 +8,39 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AutoMapper;
 using Booking_order.Entity;
 using orderBookingApi.DB.Model;
+using orderBookingApi.Entity.DBEntities;
 
 namespace Booking_order.Controllers
 {
     public class DevicesController : BaseDataController
     {
         [HttpGet]
-        public List<Device> GetAllDevices()
+        public ResponseResult GetAllDevices()
         {
             try
-            {
-                var a = db.Devices.ToList();
-                return a;// ResponseResult.GetSuccessObject(a);
+            {  
+                using (DBEntitiesModel db = new DBEntitiesModel())
+                {
+                    
+                    var data = db.Devices.Where(x => x.ParentID == null).
+                        Select(y => new DeviceDTO
+                        {
+                            DeviceID = y.DeviceID, DeviceName = y.DeviceName,
+                            Description = y.Description, ImageName = y.ImageName,
+                            IsActive = y.IsActive, ParentID = y.ParentID, CreatedBy = y.CreatedBy,
+                            CreatedOn = y.CreatedOn
+                        }
+                        ).ToList();
+                    return ResponseResult.GetSuccessObject(data);
+                }
+                //return a;// ResponseResult.GetSuccessObject(a);
             }
-            catch (Exception exp) { return null; }
+            catch (Exception exp) {
+                return ResponseResult.GetErrorObject();
+            }
         }
 
         // GET: api/Devices/5
@@ -38,6 +55,34 @@ namespace Booking_order.Controllers
             return ResponseResult.GetSuccessObject(device);
         }
 
+        [HttpGet]
+        public ResponseResult GetAllModels(int id)
+        {
+            try
+            {
+                using (DBEntitiesModel db = new DBEntitiesModel())
+                {
+
+                    var data = db.Devices.Where(x => x.ParentID == id && x.IsActive == true).
+                        Select(y => new DeviceDTO
+                        {
+                            DeviceID = y.DeviceID,
+                            DeviceName = y.DeviceName,
+                            Description = y.Description,
+                            ImageName = y.ImageName,
+                            IsActive = y.IsActive,
+                            ParentID = y.ParentID,
+                            CreatedBy = y.CreatedBy,
+                            CreatedOn = y.CreatedOn
+                        }
+                        ).ToList();
+                    return ResponseResult.GetSuccessObject(data);
+                }
+            }
+            catch (Exception exp) {
+                return ResponseResult.GetErrorObject();
+            }
+        }
         // PUT: api/Devices/5
         //[ResponseType(typeof(void))]
         //public IHttpActionResult PutDevice(int id, Device device)
