@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -11,6 +12,7 @@ using System.Web.Http.Description;
 using Booking_order.Controllers;
 using Booking_order.Entity;
 using orderBookingApi.DB.Model;
+using orderBookingApi.Services;
 
 namespace orderBookingApi.Controllers
 {
@@ -19,13 +21,13 @@ namespace orderBookingApi.Controllers
         // GET: api/Orders
         public List<Order> GetOrders()
         {
+            //new DataService().SendEmail("hafizmzahid2@gmail.com");
             var data = db.Orders.ToList();
             return data;
         }
 
-        // GET: api/Orders/5
-        [ResponseType(typeof(Order))]
-        public IHttpActionResult GetOrder(int id)
+        [HttpGet]
+        public IHttpActionResult GetOrderByID(int id)
         {
             Order order = db.Orders.Find(id);
             if (order == null)
@@ -71,19 +73,29 @@ namespace orderBookingApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Orders
-        [ResponseType(typeof(Order))]
-        public IHttpActionResult PostOrder(Order order)
+        [HttpPost]
+        public ResponseResult SaveOrder(Order order)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var sendEmail = Convert.ToBoolean(ConfigurationManager.AppSettings["SendEmail"]);
+                if (!ModelState.IsValid)
+                {
+                    return ResponseResult.GetErrorObject();
+                }
+                if(new DataService().SaveOrder(order))
+                    if(sendEmail && (order.Customer.Email != null || !order.Customer.Email.Equals("")))
+                    {
+                        if(new DataService().SendEmail(order.Customer.Email))
+                        {
+                            return ResponseResult.GetSuccessObject("Order Has been placed saved & email is sent");
+                        }
+                    }
+                return ResponseResult.GetSuccessObject(null,"Order Has been placed saved");
+            }catch(Exception exp)
+            {
+                return ResponseResult.GetErrorObject();
             }
-
-            db.Orders.Add(order);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = order.OrderID }, order);
         }
 
         // DELETE: api/Orders/5
