@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using AutoMapper;
 using Booking_order.Entity;
@@ -15,6 +16,8 @@ using orderBookingApi.Entity.DBEntities;
 
 namespace Booking_order.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+
     public class DevicesController : BaseDataController
     {
         [HttpGet]

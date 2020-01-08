@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using Booking_order.Controllers;
 using Booking_order.Entity;
@@ -16,12 +17,13 @@ using orderBookingApi.Services;
 
 namespace orderBookingApi.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class OrdersController : BaseDataController
     {
         // GET: api/Orders
         public List<Order> GetOrders()
         {
-            //new DataService().SendEmail("hafizmzahid2@gmail.com");
+            //new DataService().SendEmail("");
             var data = db.Orders.ToList();
             return data;
         }
